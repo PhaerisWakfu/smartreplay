@@ -1,0 +1,16 @@
+{
+  "name": "smart-replay",
+  "version": "1.0.0",
+  "description": "这是一个完全部署在 Cloudflare 生态上的单页面应用（SPA）。用户通过粘贴对方发送的文本或上传聊天截图，选择期望的应对语气，系统将调用 Cloudflare Workers AI 生成得体、可以直接复制发送的回复文案。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "hono": "^4.12.12"
+  }
+}
