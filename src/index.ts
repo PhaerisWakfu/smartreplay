@@ -19,7 +19,7 @@ function base64ToUint8Array(base64: string) {
   for (let i = 0; i < binaryString.length; i++) {
     bytes[i] = binaryString.charCodeAt(i);
   }
-  return [...bytes]; // Workers AI expects number array if arrayBuffer isn't accepted
+  return bytes; // Return Uint8Array
 }
 
 app.post('/api/generate', async (c) => {
@@ -28,13 +28,19 @@ app.post('/api/generate', async (c) => {
     let textToAnalyze = content
 
     if (inputType === 'image') {
-      // Perform OCR using the vision model
-      const imageBytes = base64ToUint8Array(content);
+      // Perform OCR using the vision model with the correct OpenAI-compatible multimodal format
       const response = await c.env.AI.run('@cf/google/gemma-4-26b-a4b-it', {
-        prompt: "Please extract the chat text from this image exactly as it is.",
-        image: imageBytes
+        messages: [
+          {
+            role: "user",
+            content: [
+              { type: "image_url", image_url: { url: content } },
+              { type: "text", text: "Please extract all chat text from this image exactly as it is. Output ONLY the extracted text." }
+            ]
+          }
+        ]
       });
-      textToAnalyze = response.response || (response.choices && response.choices[0]?.message?.content);
+      textToAnalyze = response.response || (response.choices && response.choices[0]?.message?.content) || "";
     }
 
     // Generate response using text model

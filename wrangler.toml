@@ -1,6 +1,7 @@
 name = "smart-replay"
 main = "src/index.ts"
 compatibility_date = "2024-03-20"
+pages_build_output_dir = "public"
 
 [ai]
 binding = "AI"
